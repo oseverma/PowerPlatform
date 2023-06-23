@@ -1,0 +1,776 @@
+{
+  "properties": {
+    "connectionReferences": {},
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "e87bc0c2-ec97-42b5-ab6d-dc4c08b68efe"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "custvendid",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "12113",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "HTTP": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "2e055216-5654-48d5-9f52-488c93f9e5a1"
+          },
+          "type": "Http",
+          "inputs": {
+            "method": "GET",
+            "uri": "https://apierp02.officevg.com/sales/orders",
+            "headers": {
+              "filtercriteria": "{\"searchcriteria\":\"customerorderdates_all\",\"q\":{\"customerid\":\"@{triggerBody()['text']}\",\"orderdatefrom\":\"2022-01-09\",\"orderdateto\":\"2023-01-09\"}}"
+            }
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "HTTP": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a840740b-794f-4d64-80cb-4a53c1eb834c"
+          },
+          "type": "Compose",
+          "inputs": "@outputs('HTTP')['body']"
+        },
+        "Response": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e86e1070-6c0f-4345-a09d-4ca93dcf7401"
+          },
+          "type": "Response",
+          "kind": "Http",
+          "inputs": {
+            "statusCode": 200,
+            "body": "@outputs('Compose')",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "orderid": {
+                    "type": "string"
+                  },
+                  "ordernumber": {
+                    "type": "string"
+                  },
+                  "orderdate": {
+                    "type": "string"
+                  },
+                  "orderdescription": {
+                    "type": "string"
+                  },
+                  "ordergroup": {
+                    "type": "string"
+                  },
+                  "ordersource": {
+                    "type": "string"
+                  },
+                  "ordertype": {
+                    "type": "string"
+                  },
+                  "orderpriority": {
+                    "type": "string"
+                  },
+                  "customerid": {
+                    "type": "string"
+                  },
+                  "customername": {
+                    "type": "string"
+                  },
+                  "customercountry": {
+                    "type": "string"
+                  },
+                  "address_dl_contactperson": {
+                    "type": "string"
+                  },
+                  "address_dl1": {
+                    "type": "string"
+                  },
+                  "address_dl2": {
+                    "type": "string"
+                  },
+                  "address_dl3": {
+                    "type": "string"
+                  },
+                  "address_dl_city": {
+                    "type": "string"
+                  },
+                  "address_dl_state": {
+                    "type": "string"
+                  },
+                  "address_dl_country": {
+                    "type": "string"
+                  },
+                  "address_dl_pincode": {
+                    "type": "string"
+                  },
+                  "ordertakenby": {
+                    "type": "string"
+                  },
+                  "ordertakenby_shortname": {
+                    "type": "string"
+                  },
+                  "ordermeasuredby": {
+                    "type": "string"
+                  },
+                  "ordermeasuredby_shortname": {
+                    "type": "string"
+                  },
+                  "ordermeasuredate": {
+                    "type": "string"
+                  },
+                  "orderimages": {
+                    "type": "string"
+                  },
+                  "isactive": {
+                    "type": "boolean"
+                  },
+                  "accounts_payment_approval": {
+                    "type": "string"
+                  },
+                  "accounts_payment_desc": {
+                    "type": "string"
+                  },
+                  "accounts_user": {
+                    "type": "integer"
+                  },
+                  "accounts_date": {
+                    "type": "string"
+                  },
+                  "fabric_issue_status": {
+                    "type": "string"
+                  },
+                  "fabric_issue_status_desc": {
+                    "type": "string"
+                  },
+                  "fabric_desc": {
+                    "type": "string"
+                  },
+                  "fabric_user": {
+                    "type": "integer"
+                  },
+                  "fabric_date": {
+                    "type": "string"
+                  },
+                  "prodreg_status": {
+                    "type": "string"
+                  },
+                  "prodreg_status_desc": {
+                    "type": "string"
+                  },
+                  "prodreg_desc": {
+                    "type": "string"
+                  },
+                  "prodreg_user": {
+                    "type": "integer"
+                  },
+                  "prodreg_date": {
+                    "type": "string"
+                  },
+                  "createdby": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "modifiedby": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  },
+                  "ts": {
+                    "type": "string"
+                  },
+                  "ordernumber_ref": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "order_eta": {
+                    "type": "string"
+                  },
+                  "order_ata": {
+                    "type": "string"
+                  },
+                  "acc_approval_eta": {
+                    "type": "string"
+                  },
+                  "acc_approval_ata": {
+                    "type": "string"
+                  },
+                  "fabricissue_eta": {
+                    "type": "string"
+                  },
+                  "fabricissue_ata": {
+                    "type": "string"
+                  },
+                  "fabricop_eta": {
+                    "type": "string"
+                  },
+                  "fabricop_ata": {
+                    "type": "string"
+                  },
+                  "prod_eta": {
+                    "type": "string"
+                  },
+                  "prod_ata": {
+                    "type": "string"
+                  },
+                  "quality_eta": {
+                    "type": "string"
+                  },
+                  "quality_ata": {
+                    "type": "string"
+                  },
+                  "dispatch_eta": {
+                    "type": "string"
+                  },
+                  "dispatch_ata": {
+                    "type": "string"
+                  },
+                  "emailid": {
+                    "type": "string"
+                  },
+                  "cellularphoneno": {
+                    "type": "string"
+                  },
+                  "orderitemlist": {
+                    "type": "object",
+                    "properties": {
+                      "list": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "productShortname": {
+                              "type": "string"
+                            },
+                            "numberitems": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "productShortname",
+                            "numberitems"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "emailid2": {
+                    "type": "string"
+                  },
+                  "phoneno1": {
+                    "type": "string"
+                  },
+                  "phoneno2": {
+                    "type": "string"
+                  },
+                  "qa_usershortname": {
+                    "type": "string"
+                  },
+                  "qa_notes": {
+                    "type": "string"
+                  },
+                  "qa_datetime": {
+                    "type": "string"
+                  },
+                  "qa_status": {
+                    "type": "string"
+                  },
+                  "pkg_usershortname": {
+                    "type": "string"
+                  },
+                  "pkg_notes": {
+                    "type": "string"
+                  },
+                  "pkg_datetime": {
+                    "type": "string"
+                  },
+                  "pkg_status": {
+                    "type": "string"
+                  },
+                  "orderitemlist_alt": {
+                    "type": "object",
+                    "properties": {
+                      "list": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "productShortname": {
+                              "type": "string"
+                            },
+                            "numberitems": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "productShortname",
+                            "numberitems"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "mergeid": {
+                    "type": "string"
+                  },
+                  "accounts_invoiceamt": {
+                    "type": "string"
+                  },
+                  "accounts_receiptamt": {
+                    "type": "string"
+                  },
+                  "salestrip_name": {
+                    "type": "string"
+                  },
+                  "ordernumber_reseller": {
+                    "type": "string"
+                  },
+                  "orderitemlist_prod": {
+                    "type": "object",
+                    "properties": {
+                      "list": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "productShortname": {
+                              "type": "string"
+                            },
+                            "numberitems": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "productShortname",
+                            "numberitems"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "order_ata_type": {
+                    "type": "integer"
+                  },
+                  "order_ata_desc": {
+                    "type": "string"
+                  },
+                  "iscustservice": {
+                    "type": "integer"
+                  },
+                  "accounts_currencyint": {
+                    "type": "string"
+                  },
+                  "accounts_invoiceamt_currencyint": {
+                    "type": "string"
+                  },
+                  "accounts_receiptamt_currencyint": {
+                    "type": "string"
+                  },
+                  "productionpriority": {
+                    "type": "string"
+                  },
+                  "customerid_t1": {
+                    "type": "string"
+                  },
+                  "customername_t1": {
+                    "type": "string"
+                  },
+                  "iscustservicewatchlist": {
+                    "type": "integer"
+                  },
+                  "closedorder_usershortname": {
+                    "type": "string"
+                  },
+                  "closedorder_date": {
+                    "type": "string"
+                  },
+                  "closedorder_notes": {
+                    "type": "string"
+                  },
+                  "isclosedorder": {
+                    "type": "boolean"
+                  },
+                  "acc_user_shortname": {
+                    "type": "string"
+                  },
+                  "orderincharge_shortname": {
+                    "type": "string"
+                  },
+                  "orderinchargeid": {
+                    "type": "string"
+                  },
+                  "isalterationitem": {
+                    "type": "boolean"
+                  },
+                  "issingleproduct": {
+                    "type": "boolean"
+                  },
+                  "issubmitted": {
+                    "type": "boolean"
+                  },
+                  "closedorder_type": {
+                    "type": "integer"
+                  },
+                  "rofc_usershortname": {
+                    "type": "string"
+                  },
+                  "rofc_date": {
+                    "type": "string"
+                  },
+                  "rofc_notes": {
+                    "type": "string"
+                  },
+                  "rof_usershortname": {
+                    "type": "string"
+                  },
+                  "rof_date": {
+                    "type": "string"
+                  },
+                  "rof_notes": {
+                    "type": "string"
+                  },
+                  "isviporder": {
+                    "type": "boolean"
+                  },
+                  "accounts_chargedate": {
+                    "type": "string"
+                  },
+                  "prod_complete_date": {
+                    "type": "string"
+                  },
+                  "order_notes_gen": {
+                    "type": "string"
+                  },
+                  "accounts_datetime": {
+                    "type": "string"
+                  },
+                  "orderproc_status": {
+                    "type": "string"
+                  },
+                  "orderproc_desc": {
+                    "type": "string"
+                  },
+                  "orderproc_datetime": {
+                    "type": "string"
+                  },
+                  "orderproc_usershortname": {
+                    "type": "string"
+                  },
+                  "prod_notes": {
+                    "type": "string"
+                  },
+                  "prod_allocated_process": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "prod_allocated_process": {
+                          "type": "string"
+                        },
+                        "count": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "prod_allocated_process",
+                        "count"
+                      ]
+                    }
+                  },
+                  "prod_stageat": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "prod_stageat": {
+                          "type": "string"
+                        },
+                        "count": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "prod_stageat",
+                        "count"
+                      ]
+                    }
+                  },
+                  "prodstart_ata": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "prodstartdate": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "prodstartdate"
+                      ]
+                    }
+                  },
+                  "stickerprintcount": {
+                    "type": "string"
+                  },
+                  "laststickerprintdate": {
+                    "type": "string"
+                  },
+                  "item_current_status": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "ordernumber": {
+                          "type": "string"
+                        },
+                        "productshortname": {
+                          "type": "string"
+                        },
+                        "qa_status": {
+                          "type": "string"
+                        },
+                        "count": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "ordernumber",
+                        "productshortname",
+                        "qa_status",
+                        "count"
+                      ]
+                    }
+                  },
+                  "production_current_status": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "ordernumber": {
+                          "type": "string"
+                        },
+                        "productshortname": {
+                          "type": "string"
+                        },
+                        "prod_status": {
+                          "type": "string"
+                        },
+                        "count": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "ordernumber",
+                        "productshortname",
+                        "prod_status",
+                        "count"
+                      ]
+                    }
+                  },
+                  "total_prod_items": {
+                    "type": "string"
+                  },
+                  "prod_items_notstarted": {
+                    "type": "string"
+                  },
+                  "prod_items_wip": {
+                    "type": "string"
+                  },
+                  "prod_items_completed": {
+                    "type": "string"
+                  },
+                  "bill_pending": {
+                    "type": "string"
+                  },
+                  "no_payment": {
+                    "type": "string"
+                  },
+                  "fabric_not_cut": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "orderid",
+                  "ordernumber",
+                  "orderdate",
+                  "orderdescription",
+                  "ordergroup",
+                  "ordersource",
+                  "ordertype",
+                  "orderpriority",
+                  "customerid",
+                  "customername",
+                  "customercountry",
+                  "address_dl_contactperson",
+                  "address_dl1",
+                  "address_dl2",
+                  "address_dl3",
+                  "address_dl_city",
+                  "address_dl_state",
+                  "address_dl_country",
+                  "address_dl_pincode",
+                  "ordertakenby",
+                  "ordertakenby_shortname",
+                  "ordermeasuredby",
+                  "ordermeasuredby_shortname",
+                  "ordermeasuredate",
+                  "orderimages",
+                  "isactive",
+                  "accounts_payment_approval",
+                  "accounts_payment_desc",
+                  "accounts_user",
+                  "accounts_date",
+                  "fabric_issue_status",
+                  "fabric_issue_status_desc",
+                  "fabric_desc",
+                  "fabric_user",
+                  "fabric_date",
+                  "prodreg_status",
+                  "prodreg_status_desc",
+                  "prodreg_desc",
+                  "prodreg_user",
+                  "prodreg_date",
+                  "createdby",
+                  "createdAt",
+                  "modifiedby",
+                  "updatedAt",
+                  "ts",
+                  "ordernumber_ref",
+                  "source",
+                  "order_eta",
+                  "order_ata",
+                  "acc_approval_eta",
+                  "acc_approval_ata",
+                  "fabricissue_eta",
+                  "fabricissue_ata",
+                  "fabricop_eta",
+                  "fabricop_ata",
+                  "prod_eta",
+                  "prod_ata",
+                  "quality_eta",
+                  "quality_ata",
+                  "dispatch_eta",
+                  "dispatch_ata",
+                  "emailid",
+                  "cellularphoneno",
+                  "orderitemlist",
+                  "emailid2",
+                  "phoneno1",
+                  "phoneno2",
+                  "qa_usershortname",
+                  "qa_notes",
+                  "qa_datetime",
+                  "qa_status",
+                  "pkg_usershortname",
+                  "pkg_notes",
+                  "pkg_datetime",
+                  "pkg_status",
+                  "orderitemlist_alt",
+                  "mergeid",
+                  "accounts_invoiceamt",
+                  "accounts_receiptamt",
+                  "salestrip_name",
+                  "ordernumber_reseller",
+                  "orderitemlist_prod",
+                  "order_ata_type",
+                  "order_ata_desc",
+                  "iscustservice",
+                  "accounts_currencyint",
+                  "accounts_invoiceamt_currencyint",
+                  "accounts_receiptamt_currencyint",
+                  "productionpriority",
+                  "customerid_t1",
+                  "customername_t1",
+                  "iscustservicewatchlist",
+                  "closedorder_usershortname",
+                  "closedorder_date",
+                  "closedorder_notes",
+                  "isclosedorder",
+                  "acc_user_shortname",
+                  "orderincharge_shortname",
+                  "orderinchargeid",
+                  "isalterationitem",
+                  "issingleproduct",
+                  "issubmitted",
+                  "closedorder_type",
+                  "rofc_usershortname",
+                  "rofc_date",
+                  "rofc_notes",
+                  "rof_usershortname",
+                  "rof_date",
+                  "rof_notes",
+                  "isviporder",
+                  "accounts_chargedate",
+                  "prod_complete_date",
+                  "order_notes_gen",
+                  "accounts_datetime",
+                  "orderproc_status",
+                  "orderproc_desc",
+                  "orderproc_datetime",
+                  "orderproc_usershortname",
+                  "prod_notes",
+                  "prod_allocated_process",
+                  "prod_stageat",
+                  "prodstart_ata",
+                  "stickerprintcount",
+                  "laststickerprintdate",
+                  "item_current_status",
+                  "production_current_status",
+                  "total_prod_items",
+                  "prod_items_notstarted",
+                  "prod_items_wip",
+                  "prod_items_completed",
+                  "bill_pending",
+                  "no_payment",
+                  "fabric_not_cut"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}
